@@ -1,4 +1,5 @@
-# Stata analysis code (BHPS & UKHLS) — SRD-25-0284
+# Stata analysis code (BHPS & UKHLS) — SRD-25-0284 - The Division of Labour and Female Partners’ Relative Pay Across Phases of Parenthood: Evidence from UK Couples<img width="468" height="70" alt="image" src="https://github.com/user-attachments/assets/1cb99dde-7782-477c-af0f-6bf832b51f42" />
+
 
 This repository provides the Stata do-file used to import the BHPS/UKHLS data (locally), clean/prepare the analytic sample, generate key variables, and run the statistical analyses reported in the manuscript.
 
