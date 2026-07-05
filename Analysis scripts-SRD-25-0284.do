@@ -1,3 +1,10 @@
+* Analysis scripts for SRD-25-0284 (Socius),last updated July 2026
+* Data (not included) via UK Data Service, BHPS SN 5151 and Understanding Society SN 6614 (19th Edition)
+* Required user-written packages
+*   ssc install unique
+*   ssc install outreg2
+*   ssc install khb
+
 ////BH06
 use "bhps/bf_hhresp.dta", clear
 renpfix bf_
@@ -497,31 +504,31 @@ drop if sex==.
 drop if hidp==.
 //0 deleted 
 
+// Restrict the sample to couples aged 18-65
+drop if age<18|age>65
+//46,260 observations deleted (189,976 left)
+
+//////////////////////////////////////////////////////////////////
+//2: paid employment(ft+pt)| 5: maternity leave | 
+//14: shared parental leave : only includes in wave 13 
+//(2,967 observations deleted)
+keep if jbstat==2|jbstat==5 
+//65,591 deleted
 //Thinking about your (main) job, how many hours
 //excluding overtime and meal breaks, are you expected to work in a normal week?
 drop if jbhrs<0
 drop if jbhrs==.
-//(111,464 observations deleted )
+//((5,098 observations deleted )
 sum jbhrs
-
 //housework hours: hours spent on housework per week
-//(7,988 observations deleted)
+//(7,758 observations deleted)
 drop if howlng<0
 drop if howlng==.
-//(8,370 observations deleted)
-//116,402
+//111,529 obs left
 save "spouse_basic.dta", replace
 
-//2. Handling of individual-level variables
+//2. Handling some other individual-level variables
 use "spouse_basic.dta", clear
-///////////////////////////////////////////////////////////////////////
-//2: paid employment(ft+pt)| 5: maternity leave | 
-//14: shared parental leave : only includes in wave 13 
-keep if jbstat==2|jbstat==5
-//(2,967 observations deleted)
-
-// Restrict the sample to couples aged 18-65
-drop if age<18|age>65
 //(1,906 observations deleted)
 gen age_sq = age^2
 
@@ -886,6 +893,7 @@ xtreg original_howlng1 i.parenthood_status4 ib2.edu_mating3 ib2.occu_mating3 i.r
 outreg2 using A2.doc, dec(2) alpha(0.001, 0.01, 0.05, 0.1) sym(***,**,*,+) replace
 xtreg original_howlng2 i.parenthood_status4 ib2.edu_mating3 ib2.occu_mating3 i.relationship1 c.age1 c.age2 c.cage1_sq c.cage2_sq i.wave1, fe
 outreg2 using A2.doc, dec(2) alpha(0.001, 0.01, 0.05, 0.1) sym(***,**,*,+) append
+gen wife_original_howlng=original_howlng2/(original_howlng1+original_howlng2)
 xtreg wife_original_howlng i.parenthood_status4 ib2.edu_mating3 ib2.occu_mating3 i.relationship1 c.mean_howlong c.age1 c.age2 c.cage1_sq c.cage2_sq i.wave1, fe
 outreg2 using A2.doc, dec(2) alpha(0.001, 0.01, 0.05, 0.1) sym(***,**,*,+) append
 
@@ -901,6 +909,6 @@ khb regress d_wife_cappay pstatus42 pstatus43 pstatus44|| d_wife_workh d_wife_ho
 	d_wave113 d_wave114)summary disentangle vce(cluster couple_id)
 
 //supplememtary
-xtreg wife_cappay c.wife_workh c.wife_howlong ib2.edu_mating3 ib2.occu_mating3 i.relationship1 ///
-c.mean_cappay c.age1 c.age2 c.cage1_sq c.cage2_sq c.mean_cappay c.wave1, fe
+xtreg wife_cappay c.wife_workh c.wife_howlong ib2.edu_mating3 ib2.occu_mating3 i.relationship1 c.mean_cappay c.age1 c.age2 c.cage1_sq c.cage2_sq c.wave1, fe
 outreg2 using A3.doc, dec(2) alpha(0.001, 0.01, 0.05, 0.1) sym(***,**,*,+) replace 
+
