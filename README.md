@@ -1,21 +1,21 @@
-# Stata analysis code (BHPS & UKHLS) — SRD-25-0284 - The Division of Labour and Female Partners’ Relative Pay Across Phases of Parenthood: Evidence from UK Couples<img width="468" height="70" alt="image" src="https://github.com/user-attachments/assets/1cb99dde-7782-477c-af0f-6bf832b51f42" />
+# Stata analysis code (BHPS & UKHLS) — SRD-25-0284 — The Division of Labour and Female Partners' Relative Pay Across Phases of Parenthood: Evidence from UK Dual-earner Couples
 
-
-This repository provides the Stata do-file used to import the BHPS/UKHLS data (locally), clean/prepare the analytic sample, generate key variables, and run the statistical analyses reported in the manuscript.
+This repository provides the Stata do-file used to import the BHPS/UKHLS data (locally), clean and prepare the analytic sample, generate key variables, and run the statistical analyses reported in the manuscript.
 
 ## Software
 - Stata/SE 18.5
 
 ## Repository contents
-- `Analysis scripts-SRD-25-0284.do`  
-  A single do-file containing data import, cleaning, variable construction, and analysis models.
+- `Analysis scripts-SRD-25-0284.do`
+  A single do-file containing data import, cleaning, variable construction, and all analysis models (FE panel regressions, Wald contrasts, KHB mediation, sensitivity and supplementary analyses).
 
 ## Data access and restrictions
-This study uses secondary data from the British Household Panel Survey (BHPS) and Understanding Society: the UK Household Longitudinal Study (UKHLS).
-These datasets are accessed via the UK Data Service and are subject to licence and usage restrictions.
-Therefore, **the raw data (and any restricted derived datasets) are not redistributed in this repository**.
+This study uses secondary data from the British Household Panel Survey (BHPS) and Understanding Society, the UK Household Longitudinal Study (UKHLS). Both are accessed via the UK Data Service and are subject to licence and usage restrictions, so **no raw or derived data files are redistributed in this repository**.
 
-Readers wishing to reproduce the analysis should obtain the relevant BHPS/UKHLS files directly from the UK Data Service under the appropriate access conditions.
+- BHPS. University of Essex, Institute for Social and Economic Research. British Household Panel Survey, Waves 1-18, 1991-2009. UK Data Service. SN 5151.
+- UKHLS. University of Essex, Institute for Social and Economic Research. Understanding Society, Waves 1-14, 2009-2023 and Harmonised BHPS, Waves 1-18, 1991-2009. 19th Edition. UK Data Service. SN 6614.
+
+The analysis uses BHPS waves 6, 8, 10, 12, 14, 16, 18 (file prefixes bf, bh, bj, bl, bn, bp, br) and UKHLS main-survey waves 2, 4, 6, 8, 10, 12, 14 (file prefixes b, d, f, h, j, l, n), i.e. the waves in which weekly housework hours are collected.
 
 ## How to reproduce the analysis
 1. Obtain the required BHPS/UKHLS data files via the UK Data Service.
@@ -24,10 +24,10 @@ Readers wishing to reproduce the analysis should obtain the relevant BHPS/UKHLS 
    - `do "Analysis scripts-SRD-25-0284.do"`
 
 ## Outputs
-The do-file runs the statistical models and prints results to the Stata Results window.
-This repository does not currently include scripts to generate publication-ready tables/figures.
-(If the do-file saves logs or intermediate files locally, they will be written to the output directory specified in the path settings.)
+- Main FE regression tables are exported via `outreg2` to `1.doc` and `2.doc` (manuscript Tables 4 and 6).
+- Sensitivity and supplementary tables are exported to `A1.doc`, `A2.doc`, and `A3.doc` (Appendix Tables A1-A3).
+- Wald contrasts (`lincom`, manuscript Tables 5 and 7) and the KHB mediation results (manuscript Table 8) are printed to the Stata Results window.
 
 ## Notes
-- Please ensure all required user-written packages (if any) are installed before running the script.
-- If any file paths or dataset names differ across UK Data Service downloads/waves, adjust the relevant lines in the do-file accordingly.
+- Variable suffix `1` refers to the male partner and suffix `2` to the female partner throughout the do-file.
+- If file names differ across UK Data Service downloads, adjust the relevant `use` lines accordingly.
